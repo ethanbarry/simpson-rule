@@ -1,7 +1,8 @@
 fn main() {
     // Define the integrand as a closure accepting one `f64` value.
-    let integrand = |x: f64| x.sinh();
-    let integral = int_simpson(0_f64, 5_f64, 10_000_000, integrand);
+    let integrand = |x: f64| x.exp();
+
+    let integral = int_simpson(0_f64, 1_f64, 10_000_000, integrand);
 
     println!("Result: {}", integral);
 }
@@ -20,7 +21,8 @@ fn main() {
 /// ```rust
 /// let f = |x: f64| x.exp();
 /// let area = int_simpson(0f64, 1f64, 100, f);
-/// println!("The area {area} is approximately {}", 1.71828_f64);
+/// let abs_diff = (area - 2.718281828459_f64).abs();
+/// assert!(abs_diff < 1e-10);
 /// ```
 fn int_simpson<F>(a: f64, b: f64, n: i32, integrand: F) -> f64
 where
@@ -38,4 +40,17 @@ where
             / 6_f64;
     }
     result
+}
+
+#[cfg(test)]
+mod test {
+    use crate::*;
+
+    #[test]
+    fn check_difference() {
+        let f = |x: f64| x.exp();
+        let area = int_simpson(0f64, 1f64, 10_000_000, f);
+        let abs_diff = (area - 1.718281828_f64).abs();
+        assert!(abs_diff < 1e-8);
+    }
 }
