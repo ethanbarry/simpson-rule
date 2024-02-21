@@ -2,7 +2,7 @@ fn main() {
     // Define the integrand as a closure accepting one `f64` value.
     let integrand = |x: f64| x.exp();
 
-    let integral = int_simpson(0_f64, 1_f64, 10_000_000, integrand);
+    let integral = int_simpson(0_f64, 10_f64, 100_000_000, integrand.clone());
 
     println!("Result: {}", integral);
 }
